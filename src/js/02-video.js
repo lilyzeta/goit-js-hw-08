@@ -1,23 +1,29 @@
 const iframe = document.querySelector('iframe');
 const player = new Vimeo.Player(iframe);
 const local = 'videoplayer-current-time';
-var throttled = _.throttle(renewToken, 1000, { trailing: false });
-jQuery(player).on('timeupdate', throttled);
-player.on('play', function () {
-  console.log('played the video!');
+
+let saveTimeInterval;
+
+player.on('play', () => {
+  saveTimeInterval = setInterval(saveTimeToLocalStorage, 1000);
 });
 
-player.getVideoTitle().then(function (title) {
-  console.log('title:', title);
+player.on('pause', () => {
+  clearInterval(saveTimeInterval);
 });
 
-const onPlay = function (data) {
-  localStorage.setItem(local, data.seconds.toString());
-};
-
-player.on('timeupdate', onPlay);
+function saveTimeToLocalStorage() {
+  player.getCurrentTime().then(seconds => {
+    localStorage.setItem(local, seconds.toString());
+  });
+}
 
 function setCurrentTime() {
-  const savedTime = localStorage.getItem(LOCAL_STORAGE_KEY);
+  localStorage.getItem(local);
+
+  if (savedTime) {
+    player.setCurrentTime(parseFloat(savedTime));
+  }
 }
-player.setCurrentTime(savedTime);
+
+setCurrentTime();
