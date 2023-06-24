@@ -1,44 +1,47 @@
+import throttle from 'lodash.throttle';
+
 const STORAGE_KEY = 'feedback-form-state';
-const form = document.querySelector('.feedback-form');
+const formEl = document.querySelector('.feedback-form');
+
+initForm();
+
 let what = localStorage.getItem(STORAGE_KEY);
 
-form.addEventListener('submit', submitAct);
+formEl.addEventListener('input', throttle(onFormInput, 500));
 
-const users = {
-  email: '',
-  password: '',
-};
+function onFormSubmit(evt) {
+  evt.preventDefault();
+}
 
-form.addEventListener('submit', submitAct);
+const {
+  elements: { email, message },
+} = evt.target;
 
-function submitAct(event) {
-  event.preventDefault();
-  const email = form.elements.email;
-  const password = form.elements.password;
+if (email.value === '' || message.value === '') {
+  return alert('All fields must be filled in');
+} else {
+  console.log(JSON.parse(localStorage.getItem(STORAGE_KEY)));
+  console.log('Form submitted');
+  evt.target.reset();
+  localStorage.removeItem(STORAGE_KEY);
+}
 
-  if (email.value.length === 0 || password.value.trim() === '') {
-    alert('All Fields must be filled in');
-  } else {
-    users.email = email.value;
-    users.password = password.value;
+function onFormInput(evt) {
+  let persistedData = localStorage.getItem(STORAGE_KEY);
+  persistedData = persistedData ? JSON.parse(persistedData) : {};
+  persistedData[evt.target.name] = evt.target.value;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(persistedData));
+}
 
-    console.log(what);
-    console.log('Form Submitted');
-    form.reset();
-    localStorage.removeItem(STORAGE_KEY);
+function initForm() {
+  let savedData = localStorage.getItem(STORAGE_KEY);
+
+  if (savedData) {
+    savedData = JSON.parse(savedData);
+    console.log(savedData);
   }
 }
 
-form.addEventListener('input', submitAct2 => {
-  maxInterval = setInterval(submitAct2, 1000);
+Object.entries(savedData).forEach(([name, value]) => {
+  formEl.elements[name].value = value;
 });
-
-function submitAct2(event) {
-  let parsley = JSON.parse(what);
-
-  if (parsley == null) {
-    let obj = {};
-  }
-  let input = event.target.value;
-  obj = { input };
-}
