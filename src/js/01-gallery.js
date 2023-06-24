@@ -1,5 +1,4 @@
-import SimpleLightbox from '/node_modules/simplelightbox';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import SimpleLightbox from 'simplelightbox';
 
 import 'simplelightbox/dist/simple-lightbox.min.css';
 // Add imports above this line
@@ -40,7 +39,7 @@ function createMarkUp(images) {
     )
     .join('');
 }
-const lightbox = SimpleLightbox('.gallery a', {
+const lightbox = new SimpleLightbox('.gallery a', {
   captionSelector: 'img',
   captionsData: 'alt',
   captionDelay: 250,
