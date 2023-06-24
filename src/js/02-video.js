@@ -19,7 +19,7 @@ function saveTimeToLocalStorage() {
 }
 
 function setCurrentTime() {
-  localStorage.getItem(local);
+  const savedTime = localStorage.getItem(local);
 
   if (savedTime) {
     player.setCurrentTime(parseFloat(savedTime));
