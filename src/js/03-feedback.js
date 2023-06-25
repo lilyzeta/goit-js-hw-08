@@ -5,9 +5,8 @@ const formEl = document.querySelector('.feedback-form');
 
 initForm();
 
-let what = localStorage.getItem(STORAGE_KEY);
-
 formEl.addEventListener('input', throttle(onFormInput, 500));
+formEl.addEventListener('submit', throttle(onFormSubmit, 500));
 
 function onFormSubmit(evt) {
   evt.preventDefault();
@@ -39,9 +38,9 @@ function initForm() {
   if (savedData) {
     savedData = JSON.parse(savedData);
     console.log(savedData);
+
+    Object.entries(savedData).forEach(([name, value]) => {
+      formEl.elements[name].value = value;
+    });
   }
 }
-
-Object.entries(savedData).forEach(([name, value]) => {
-  formEl.elements[name].value = value;
-});

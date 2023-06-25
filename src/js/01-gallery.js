@@ -6,15 +6,7 @@ import { galleryItems } from './gallery-items';
 import Notiflix from 'notiflix';
 // Change code below this line
 
-console.log(galleryItems);
 
-Notiflix.Notify.success('Example Text');
-
-Notiflix.Notify.failure('Didnt Work Bro');
-
-Notiflix.Notify.warning('Maybe dont do that');
-
-Notiflix.Notify.info('Turtles are Cute');
 
 const galleryStuff = document.querySelector('.gallery');
 const createMarkUpEl = createMarkUp(galleryItems);
